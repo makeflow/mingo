@@ -1,4 +1,4 @@
-// mingo.js 2.3.5
+// mingo.js 2.3.6
 // Copyright (c) 2019 Francis Asante
 // MIT
 
@@ -2577,7 +2577,7 @@ const simpleOperators = {
     // queries for null should be able to find undefined fields
     if (isNil(a)) return b.some(isNull)
 
-    return intersection(ensureArray(a), b).length > 0
+    return intersection(ensureArray(a), b).length > 0 || isArray(a) && intersection([a], b).length > 0
   },
 
   /**
@@ -3037,7 +3037,8 @@ const dateOperators = {
   $dayOfYear (obj, expr) {
     let d = computeValue(obj, expr);
     let start = new Date(d.getFullYear(), 0, 0);
-    let diff = d - start;
+    let end = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    let diff = end - start;
     let oneDay = 1000 * 60 * 60 * 24;
     return Math.round(diff / oneDay)
   },
@@ -4313,7 +4314,7 @@ const CollectionMixin = {
   }
 };
 
-const VERSION = '2.3.5';
+const VERSION = '2.3.6';
 
 // mingo!
 var index = {
